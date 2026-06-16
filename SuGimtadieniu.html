@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Su gimtadieniu, Mama ♥</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#e8c76a;
+  --gold2:#ffd97a;
+  --gold3:#b8920a;
+  --rose:#c94070;
+  --cream:#fff8e8;
+  --silver:#d4c9b0;
+  --wine1:#5a0820;
+  --wine2:#8a1030;
+  --wine3:#3a0412;
+  --black:#000;
+}
+html,body{width:100%;height:100%;overflow-x:hidden;background:#000;font-family:'Cormorant Garamond',serif;color:var(--cream)}
+body{
+  background:
+    radial-gradient(circle at 50% 20%, rgba(120,20,60,.16), transparent 35%),
+    radial-gradient(circle at 50% 50%, rgba(232,199,106,.07), transparent 30%),
+    linear-gradient(180deg,#070006 0%,#000 100%);
+}
+
+#bg-canvas,#petal-canvas,#fire-canvas{
+  position:fixed;inset:0;width:100%;height:100%;
+}
+#bg-canvas{z-index:0}
+#petal-canvas{z-index:2;pointer-events:none}
+#fire-canvas{z-index:9;pointer-events:none}
+
+#vignette{
+  position:fixed;inset:0;
+  background:radial-gradient(ellipse at center, transparent 38%, rgba(0,0,0,.74) 100%);
+  z-index:1;pointer-events:none;
+}
+#spotlight{
+  position:fixed;top:-220px;left:50%;transform:translateX(-50%);
+  width:640px;height:980px;
+  background:conic-gradient(from 180deg at 50% 0%, transparent 74deg, rgba(255,235,160,.08) 90deg, rgba(255,235,160,.04) 96deg, transparent 108deg);
+  z-index:1;pointer-events:none;
+  filter:blur(.2px);
+  animation:spotSway 8s ease-in-out infinite alternate;
+}
+@keyframes spotSway{from{left:48%}to{left:52%}}
+
+#curtain-wrap{
+  position:fixed;inset:0;z-index:50;pointer-events:none;
+}
+.curtain{
+  position:absolute;top:0;height:100%;width:50%;
+  background:
+    linear-gradient(to bottom,var(--wine1) 0%, var(--wine2) 30%, #6a0825 60%, var(--wine3) 100%);
+  transition:transform 3.5s cubic-bezier(.77,0,.18,1);
+}
+.curtain::before{
+  content:'';
+  position:absolute;inset:0;
+  background:repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0px, rgba(255,255,255,0) 6px, rgba(0,0,0,.09) 12px);
+}
+#curtain-left{left:0;transform-origin:left center}
+#curtain-right{right:0;transform-origin:right center}
+#curtain-left.open{transform:translateX(-100%)}
+#curtain-right.open{transform:translateX(100%)}
+#curtain-rod{
+  position:absolute;top:0;left:0;width:100%;height:18px;
+  background:linear-gradient(to bottom,#9a7520,#c9a040,#7a5810);
+  z-index:51;box-shadow:0 4px 20px rgba(0,0,0,.8);
+}
+#crown-mark{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:60px;height:60px;border-radius:50%;
+  background:radial-gradient(circle,#e8c76a,#b8920a);
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;z-index:52;
+  box-shadow:0 0 20px rgba(232,199,106,.6);
+}
+
+#scene{
+  position:relative;z-index:10;width:100%;
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;
+  padding:0 20px 80px;
+}
+
+#intro{
+  text-align:center;
+  padding:92px 20px 38px;
+  opacity:0;animation:fadeUp 1.5s ease forwards;animation-delay:4s;
+}
+.karuna-svg{margin-bottom:16px;filter:drop-shadow(0 0 12px rgba(232,199,106,.5))}
+.small-line{
+  font-style:italic;
+  font-size:clamp(14px,2.5vw,18px);
+  letter-spacing:.28em;
+  color:var(--gold);
+  text-transform:uppercase;
+  margin-bottom:12px;
+  animation:goldGlow 3s ease-in-out infinite;
+}
+@keyframes goldGlow{
+  0%,100%{opacity:.82;text-shadow:0 0 8px rgba(232,199,106,.3)}
+  50%{opacity:1;text-shadow:0 0 20px rgba(232,199,106,.8)}
+}
+h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(36px,8vw,88px);
+  font-weight:700;
+  line-height:1.05;
+  color:#fff;
+  text-shadow:0 0 40px rgba(232,199,106,.35),0 2px 40px rgba(0,0,0,.8);
+  letter-spacing:.02em;
+}
+h1 span{
+  display:block;
+  color:var(--gold);
+  animation:goldPulse 2.5s ease-in-out infinite alternate;
+}
+@keyframes goldPulse{
+  from{text-shadow:0 0 20px rgba(232,199,106,.3)}
+  to{text-shadow:0 0 60px rgba(232,199,106,.9),0 0 100px rgba(232,199,106,.4)}
+}
+.subtitle{
+  display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;
+  margin:20px 0 0;color:var(--silver);font-style:italic;
+  font-size:clamp(16px,3vw,22px);letter-spacing:.06em;
+}
+.orn{color:var(--gold);font-size:24px}
+
+.divider{
+  display:flex;align-items:center;gap:16px;width:100%;max-width:620px;margin:40px auto;
+}
+.divider .line{flex:1;height:1px;background:linear-gradient(to right,transparent,var(--gold3),transparent)}
+.divider .diamond{width:8px;height:8px;background:var(--gold);transform:rotate(45deg)}
+
+#poem{
+  max-width:680px;width:100%;text-align:center;padding:20px;
+  opacity:0;animation:fadeUp 1.5s ease forwards;animation-delay:5s;
+}
+.frame{
+  border:1px solid rgba(232,199,106,.3);
+  padding:40px 48px;
+  position:relative;
+  background:rgba(10,0,5,.6);
+  backdrop-filter:blur(4px);
+  overflow:hidden; /* SVARBU - stabilizuoja kampus */
+}
+
+/* VISI 4 kampai vienodai, be inner */
+.frame::before,
+.frame::after,
+.frame .corner-tl,
+.frame .corner-tr,
+.frame .corner-bl,
+.frame .corner-br{
+  content:'';
+  position:absolute;
+  width:26px;
+  height:26px;
+  border:2px solid var(--gold);
+  opacity:.65;
+  box-sizing:border-box;
+  pointer-events:none;
+}
+
+/* kampai */
+.frame::before{
+  top:10px;
+  left:10px;
+  border-right:none;
+  border-bottom:none;
+}
+
+.frame::after{
+  bottom:10px;
+  right:10px;
+  border-left:none;
+  border-top:none;
+}
+.inner{position:relative}
+.poem-text{
+  font-style:italic;
+  font-size:clamp(17px,3vw,22px);
+  line-height:2;
+  color:var(--cream);
+  letter-spacing:.02em;
+}
+.poem-text .line{
+  display:block;
+  opacity:0;transform:translateY(8px);
+  transition:opacity 1s ease,transform 1s ease;
+}
+.poem-text .line.show{opacity:1;transform:none}
+.poem-author{
+  margin-top:28px;color:var(--gold);font-size:15px;letter-spacing:.15em;text-transform:uppercase
+}
+
+#message{
+  max-width:760px;width:100%;margin:40px auto;
+  opacity:0;animation:fadeUp 1.5s ease forwards;animation-delay:5.5s;
+}
+.card{
+  background:rgba(15,0,8,.7);
+  border:1px solid rgba(232,199,106,.25);
+  padding:44px 52px;
+  position:relative;
+  backdrop-filter:blur(6px);
+}
+.card::before{
+  content:'"';
+  position:absolute;top:-24px;left:32px;
+  font-family:'Playfair Display',serif;font-size:120px;color:rgba(232,199,106,.12);line-height:1;pointer-events:none
+}
+.par{
+  font-size:clamp(16px,2.5vw,19px);
+  line-height:1.9;color:var(--cream);margin-bottom:18px
+}
+.sign{
+  margin-top:28px;text-align:right;color:var(--gold);font-style:italic;font-size:18px
+}
+
+#gift-section{
+  max-width:720px;width:100%;margin:50px auto 0;
+  opacity:0;animation:fadeUp 2s ease forwards;animation-delay:7s;
+}
+.gift-title{
+  text-align:center;font-style:italic;color:var(--gold);font-size:16px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:10px
+}
+.gift-note{
+  text-align:center;font-style:italic;color:rgba(232,199,106,.55);font-size:14px;letter-spacing:.1em;margin-bottom:36px;
+  animation:blink 2s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:.55}50%{opacity:1}}
+
+#gift{
+  display:flex;flex-direction:column;align-items:center;cursor:pointer;position:relative;user-select:none;
+  filter:drop-shadow(0 16px 26px rgba(0,0,0,.45));
+}
+#lid{
+  width:200px;height:50px;position:relative;transform-origin:bottom center;
+  transition:transform .65s cubic-bezier(.68,-.55,.27,1.55),opacity .35s ease;
+  z-index:3;
+}
+#body{
+  width:180px;height:160px;position:relative;z-index:2;transition:transform .4s ease, filter .4s ease;
+}
+#bow{
+  position:absolute;top:-50px;left:50%;transform:translateX(-50%);
+  width:180px;height:80px;z-index:5;
+  transition:transform .5s ease,opacity .5s ease;
+}
+
+#gift:hover:not(.opened) #lid{transform:rotate(-3deg) translateY(-4px)}
+#gift:hover:not(.opened) #bow{transform:translateX(-50%) scale(1.05)}
+#gift.shake{animation:shake .5s ease}
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-8px)}
+  40%{transform:translateX(8px)}
+  60%{transform:translateX(-6px)}
+  80%{transform:translateX(6px)}
+}
+#gift.opened #lid{transform:rotate(-48deg) translateX(-58px) translateY(-42px);opacity:0}
+#gift.opened #bow{transform:translateX(-50%) translateY(-80px) scale(.5);opacity:0}
+#gift.opened #body{transform:translateY(6px) scale(1.02)}
+#gift.opened{
+  cursor:default;
+}
+
+#reveal{
+  max-width:760px;width:100%;
+  margin:0 auto;
+  opacity:0;transform:translateY(34px) scale(.97);
+  transition:opacity 1s ease,transform 1s ease;
+  pointer-events:none;
+}
+#reveal.show{
+  opacity:1;transform:translateY(0) scale(1);pointer-events:all;
+}
+.reveal-label{
+  text-align:center;font-style:italic;color:var(--gold);font-size:16px;letter-spacing:.2em;text-transform:uppercase;
+  margin:40px 0 26px;
+}
+
+.ticket{
+  position:relative;
+  background:linear-gradient(135deg,#120007 0%,#1c000b 40%,#0a0004 100%);
+  border:1px solid rgba(232,199,106,.5);
+  overflow:hidden;
+  transition:transform .3s ease,box-shadow .3s ease;
+  box-shadow:0 24px 60px rgba(0,0,0,.35);
+}
+.ticket:hover{
+  transform:translateY(-3px);
+  box-shadow:0 22px 70px rgba(232,199,106,.15);
+}
+.ticket-sheen{
+  position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 35%,rgba(232,199,106,.05) 50%,transparent 65%);
+  animation:sheen 4s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes sheen{0%,100%{transform:translateX(-60%)}50%{transform:translateX(60%)}}
+
+.ticket-top{
+  background:linear-gradient(135deg,#3a0010,#5a0018,#3a0010);
+  padding:30px 40px 26px;
+  border-bottom:1px dashed rgba(232,199,106,.4);
+  text-align:center;
+  position:relative;
+}
+.ticket-top::before,.ticket-top::after{
+  content:'';
+  position:absolute;top:50%;
+  width:20px;height:20px;background:#000;border-radius:50%;border:1px solid rgba(232,199,106,.3)
+}
+.ticket-top::before{left:-10px;transform:translateY(-50%)}
+.ticket-top::after{right:-10px;transform:translateY(-50%)}
+.ticket-theatre{font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:rgba(232,199,106,.7);margin-bottom:10px}
+.ticket-opera{font-family:'Playfair Display',serif;font-size:clamp(13px,2vw,16px);color:rgba(255,255,255,.6);letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px}
+.ticket-name{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(32px,6vw,58px);
+  font-weight:700;
+  color:var(--gold);
+  line-height:1;
+  animation:goldPulse 3s ease-in-out infinite alternate;
+  letter-spacing:.05em;
+}
+.ticket-sub{font-style:italic;font-size:clamp(16px,3vw,24px);color:var(--silver);margin-top:6px}
+.seal{
+  position:absolute;top:12px;right:20px;width:58px;height:58px;border-radius:50%;
+  border:2px solid rgba(232,199,106,.5);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;animation:spin 12s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.seal::before{
+  content:'';
+  position:absolute;inset:-4px;border-radius:50%;border:1px dashed rgba(232,199,106,.3)
+}
+
+.ticket-body{
+  display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:center;padding:24px 32px 28px;gap:20px
+}
+.field{display:flex;flex-direction:column;gap:4px}
+.label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(232,199,106,.5)}
+.value{font-family:'Playfair Display',serif;font-size:clamp(14px,2vw,18px);color:#fff}
+.subvalue{font-size:12px;color:var(--silver);font-style:italic;margin-top:2px}
+.center-ico{font-size:36px;opacity:.8}
+.ticket-bottom{
+  border-top:1px solid rgba(232,199,106,.2);
+  padding:20px 40px;text-align:center
+}
+.ticket-msg{
+  font-style:italic;font-size:clamp(14px,2.5vw,17px);color:var(--silver);line-height:1.7
+}
+.barcode{
+  display:flex;justify-content:center;gap:2px;margin:14px auto 0;opacity:.35
+}
+.barcode span{display:inline-block;height:28px;background:var(--gold);border-radius:1px}
+.ticket-num{text-align:center;font-size:10px;letter-spacing:.3em;color:rgba(232,199,106,.4);margin-top:6px}
+
+#gallery{
+  display:none;
+  max-width:920px;width:100%;
+  margin:48px auto 0;
+  opacity:0;animation:fadeUp 1.5s ease forwards;
+}
+.gallery-title{
+  text-align:center;
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  color:var(--gold);
+  font-size:22px;
+  margin-bottom:28px;
+  letter-spacing:.08em;
+}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+}
+.gallery-item{
+  position:relative;aspect-ratio:4/3;
+  border:1px solid rgba(232,199,106,.3);
+  overflow:hidden;background:rgba(10,0,5,.8)
+}
+.gallery-item img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform 8s ease;
+  filter:sepia(.15) saturate(1.1)
+}
+.gallery-item:hover img{transform:scale(1.05)}
+.gallery-item::after{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.4),transparent);
+  pointer-events:none
+}
+.placeholder{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;
+  color:rgba(232,199,106,.35);font-size:13px;letter-spacing:.1em;text-transform:uppercase
+}
+.frame-glow{
+  position:absolute;inset:-1px;box-shadow:inset 0 0 20px rgba(232,199,106,.08);pointer-events:none
+}
+
+#roses{
+  width:100%;max-width:900px;margin:18px auto 0;display:flex;justify-content:center;
+  opacity:0;animation:fadeUp 1s ease forwards;
+}
+
+#footer{
+  text-align:center;margin:64px auto 0;max-width:560px;
+  opacity:0;animation:fadeUp 1.5s ease forwards;animation-delay:7.5s;
+}
+.footer-text{
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:clamp(18px,3vw,24px);
+  color:var(--cream);
+  line-height:1.7;margin-bottom:20px
+}
+.hearts{
+  font-size:22px;letter-spacing:8px;animation:heartPulse 1.2s ease-in-out infinite
+}
+@keyframes heartPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+.year{
+  margin-top:28px;font-size:12px;letter-spacing:.2em;color:rgba(232,199,106,.35);text-transform:uppercase
+}
+
+#music-btn{
+  position:fixed;bottom:28px;right:28px;z-index:100;
+  width:54px;height:54px;border-radius:50%;
+  background:rgba(10,0,5,.92);
+  border:1px solid rgba(232,199,106,.4);
+  color:var(--gold);font-size:22px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .3s ease;
+  box-shadow:0 0 20px rgba(232,199,106,.1)
+}
+#music-btn:hover{
+  background:rgba(90,8,32,.9);
+  box-shadow:0 0 30px rgba(232,199,106,.25);
+  transform:scale(1.1)
+}
+#music-btn.playing{animation:pulseGlow 1s ease-in-out infinite}
+@keyframes pulseGlow{
+  0%,100%{box-shadow:0 0 20px rgba(232,199,106,.2)}
+  50%{box-shadow:0 0 40px rgba(232,199,106,.6)}
+}
+
+.note{
+  position:fixed;opacity:0;color:rgba(232,199,106,.6);
+  pointer-events:none;z-index:3;animation:noteFloat linear forwards
+}
+@keyframes noteFloat{
+  0%{opacity:0;transform:translateY(0) rotate(-10deg)}
+  10%{opacity:.7}
+  80%{opacity:.5}
+  100%{opacity:0;transform:translateY(-80vh) rotate(20deg)}
+}
+
+.click-heart{
+  position:fixed;pointer-events:none;z-index:99;animation:heartRise 1.2s ease forwards
+}
+@keyframes heartRise{
+  0%{opacity:1;transform:translateY(0) scale(1)}
+  100%{opacity:0;transform:translateY(-120px) scale(.4)}
+}
+
+.fw-reveal{
+  opacity:1 !important;
+  transform:translateY(0) scale(1) !important;
+  pointer-events:all !important;
+}
+
+.spark{
+  position:fixed;pointer-events:none;z-index:12;
+  width:4px;height:4px;border-radius:50%;
+  background:var(--gold);opacity:0;animation:sparkFly 1.1s ease-out forwards
+}
+@keyframes sparkFly{
+  0%{opacity:1;transform:translate(0,0) scale(1)}
+  100%{opacity:0;transform:translate(var(--dx), var(--dy)) scale(.2)}
+}
+
+.loading{
+  position:fixed;inset:0;background:#000;z-index:200;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  transition:opacity 1.5s ease
+}
+.loading.done{opacity:0;pointer-events:none}
+.loading-rose{font-size:48px;animation:roseSpin 2s ease-in-out infinite}
+@keyframes roseSpin{0%,100%{transform:rotate(-10deg) scale(1)}50%{transform:rotate(10deg) scale(1.1)}}
+.loading-text{font-style:italic;color:rgba(232,199,106,.6);letter-spacing:.2em;font-size:14px}
+.loading-bar{width:200px;height:2px;background:rgba(232,199,106,.15);position:relative;overflow:hidden}
+.loading-bar::after{
+  content:'';position:absolute;left:-100%;top:0;height:100%;width:100%;
+  background:var(--gold);animation:load 3.2s ease forwards
+}
+@keyframes load{to{left:0}}
+
+.confetti{
+  position:fixed;pointer-events:none;z-index:11;
+  width:8px;height:8px;animation:confettiFall linear forwards
+}
+@keyframes confettiFall{
+  0%{opacity:1;transform:translateY(-20px) rotate(0deg)}
+  100%{opacity:0;transform:translateY(100vh) rotate(720deg)}
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@media(max-width:600px){
+  .card{padding:28px 24px}
+  .frame{padding:28px 24px}
+  .ticket-top{padding:24px 20px 20px}
+  .ticket-body{grid-template-columns:1fr;text-align:center;gap:16px}
+  .center-ico{display:none}
+  #lid{width:160px}
+  #body{width:140px;height:120px}
+  #bow{width:140px}
+}
+</style>
+</head>
+<body>
+
+<div id="loading" class="loading">
+  <div class="loading-rose">🌹</div>
+  <div class="loading-text">Ruošiama staigmena…</div>
+  <div class="loading-bar"></div>
+</div>
+
+<canvas id="bg-canvas"></canvas>
+<div id="vignette"></div>
+<div id="spotlight"></div>
+<canvas id="petal-canvas"></canvas>
+<canvas id="fire-canvas"></canvas>
+
+<div id="curtain-wrap">
+  <div id="curtain-rod"></div>
+  <div id="crown-mark">👑</div>
+  <div class="curtain" id="curtain-left"></div>
+  <div class="curtain" id="curtain-right"></div>
+</div>
+
+<div id="scene">
+  <section id="intro">
+    <svg class="karuna-svg" width="80" height="48" viewBox="0 0 80 48" fill="none">
+      <polygon points="4,44 16,12 40,34 64,12 76,44" fill="none" stroke="#e8c76a" stroke-width="1.5" stroke-linejoin="round"/>
+      <circle cx="4" cy="44" r="4" fill="#e8c76a"/><circle cx="76" cy="44" r="4" fill="#e8c76a"/>
+      <circle cx="40" cy="6" r="5" fill="#e8c76a"/><circle cx="16" cy="12" r="3.5" fill="#e8c76a"/><circle cx="64" cy="12" r="3.5" fill="#e8c76a"/>
+      <line x1="4" y1="44" x2="76" y2="44" stroke="#e8c76a" stroke-width="1"/>
+    </svg>
+    <h1>Su gimtadieniu,<br><span>Mama!</span></h1>
+    <div class="subtitle">
+      <span class="orn">✦</span>
+      <span>Nuoširdžiausi sveikinimai nuo Kipro, Erikos ir Nedo!</span>
+      <span class="orn">✦</span>
+    </div>
+  </section>
+
+  <div class="divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
+
+ <section id="poem">
+  <div class="frame">
+    <div class="poem-text">
+      <span class="line">Tu šviesi kaip saulė,</span>
+      <span class="line">Kaip rytų aušra.</span>
+      <span class="line">Už tave pasauly</span>
+      <span class="line">Geresnės nėra.</span>
+      <span class="line">&nbsp;</span>
+      <span class="line">Tau karšta saulytė</span>
+      <span class="line">Siunčia spindulių...</span>
+      <span class="line">Dar karščiau, mamyte,</span>
+      <span class="line">Aš tave myliu.</span>
+      <span class="line">Mama, mano mama,</span>
+      <span class="line">Aš tave myliu!</span>
+      <span class="line">Tau vėjelis šlama</span>
+      <span class="line">Tarp margų gėlių.</span>
+    </div>
+  </div>
+ </section>
+
+  <div class="divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
+
+  <section id="message">
+    <div class="card">
+      <div class="par">Miela Mama, nuoširdžiausiai sveikiname Jus su gimtadieniu! Dėkojame už Jūsų begalinę meilę, kantrybę ir šilumą, kuria mus supate kiekvieną dieną.</div>
+      <div class="par">Linkime Jums sveikatos, geros nuotaikos ir kad šypsena kuo dažniau puoštų Jūsų veidą. Tegu ši diena būna tokia pat nuostabi ir ypatinga, kokia esate Jūs pati.</div>
+      <div class="par">Ačiū, kad esate mūsų stiprybė ir didžiausias palaikymas. Mylime Jus!</div>
+    </div>
+  </section>
+
+  <div class="divider"><div class="line"></div><div class="diamond"></div><div class="line"></div></div>
+
+  <section id="gift-section">
+    <div class="gift-title">✦ Jūsų gimtadienio dovana ✦</div>
+    <div class="gift-note">Spustelėkite ant dovanų dėžutės, kad ją atidarytumėte!</div>
+
+    <div id="gift" title="Spustelėkite, kad atvertumėte dovaną!">
+      <div id="bow">
+        <svg width="180" height="80" viewBox="0 0 180 80" fill="none">
+          <path d="M90 60 C60 55 30 20 55 10 C70 4 80 25 90 40" fill="#d4204a" opacity=".9"/>
+          <path d="M90 60 C60 55 30 20 55 10 C70 4 80 25 90 40" fill="none" stroke="#ff6080" stroke-width="1" opacity=".5"/>
+          <path d="M90 60 C120 55 150 20 125 10 C110 4 100 25 90 40" fill="#b40030" opacity=".9"/>
+          <path d="M90 60 C120 55 150 20 125 10 C110 4 100 25 90 40" fill="none" stroke="#ff6080" stroke-width="1" opacity=".5"/>
+          <ellipse cx="90" cy="50" rx="12" ry="10" fill="#e8305a"/>
+          <ellipse cx="90" cy="50" rx="6" ry="5" fill="#ff6080" opacity=".6"/>
+          <line x1="90" y1="60" x2="90" y2="80" stroke="#d4204a" stroke-width="4"/>
+        </svg>
+      </div>
+
+      <div id="lid">
+        <svg width="200" height="50" viewBox="0 0 200 50" fill="none">
+          <rect x="0" y="8" width="200" height="42" rx="4" fill="#8a1830"/>
+          <rect x="0" y="8" width="200" height="42" rx="4" fill="url(#lid-grad)"/>
+          <rect x="88" y="8" width="24" height="42" fill="#c4204a" opacity=".7"/>
+          <rect x="88" y="8" width="24" height="42" fill="url(#ribbon-grad)" opacity=".5"/>
+          <rect x="0" y="8" width="200" height="3" fill="rgba(255,255,255,.15)" rx="2"/>
+          <defs>
+            <linearGradient id="lid-grad" x1="0" y1="0" x2="200" y2="50" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="rgba(255,255,255,0.12)"/>
+              <stop offset="50%" stop-color="rgba(255,255,255,0)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.2)"/>
+            </linearGradient>
+            <linearGradient id="ribbon-grad" x1="88" y1="0" x2="112" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="rgba(255,255,255,0.3)"/>
+              <stop offset="50%" stop-color="rgba(255,255,255,0.6)"/>
+              <stop offset="100%" stop-color="rgba(255,255,255,0.3)"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <div id="body">
+        <svg width="180" height="160" viewBox="0 0 180 160" fill="none">
+          <rect width="180" height="160" rx="4" fill="#6a0f25"/>
+          <rect width="180" height="160" rx="4" fill="url(#box-grad)"/>
+          <rect x="0" y="0" width="4" height="160" fill="rgba(255,255,255,.05)"/>
+          <rect x="176" y="0" width="4" height="160" fill="rgba(0,0,0,.15)"/>
+          <rect x="78" y="0" width="24" height="160" fill="#c4204a" opacity=".65"/>
+          <rect x="84" y="0" width="12" height="160" fill="rgba(255,255,255,.15)"/>
+          <text x="90" y="100" font-size="36" text-anchor="middle" fill="rgba(232,199,106,.25)" font-family="serif">✦</text>
+          <text x="35" y="60" font-size="18" text-anchor="middle" fill="rgba(232,199,106,.12)" font-family="serif">♥</text>
+          <text x="145" y="130" font-size="18" text-anchor="middle" fill="rgba(232,199,106,.12)" font-family="serif">♥</text>
+          <defs>
+            <linearGradient id="box-grad" x1="0" y1="0" x2="180" y2="160" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="rgba(255,255,255,0.1)"/>
+              <stop offset="40%" stop-color="rgba(255,255,255,0)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.25)"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section id="reveal">
+    <div class="reveal-label">✦ Jūsų vakaro scena ✦</div>
+
+    <div class="ticket">
+      <div class="ticket-sheen"></div>
+      <div class="ticket-top">
+        <div class="seal">♪</div>
+        <div class="ticket-theatre">Kauno valstybinis muzikinis teatras</div>
+        <div class="ticket-opera">Giuseppe Verdi</div>
+        <div class="ticket-name">LA TRAVIATA</div>
+        <div class="ticket-sub">„Paklydusioji“</div>
+      </div>
+
+      <div class="ticket-body">
+        <div class="field">
+          <div class="label">Data</div>
+          <div class="value">2026-12-20</div>
+          <div class="subvalue">Sekmadienis</div>
+        </div>
+        <div class="center-ico">🎭</div>
+        <div class="field" style="text-align:right">
+          <div class="label">Pradžia</div>
+          <div class="value">18:00 val.</div>
+          <div class="subvalue">Vakaro spektaklis</div>
+        </div>
+      </div>
+
+      <div class="ticket-bottom">
+        <div class="ticket-msg">„Tegul kiekviena diena Jums atneša džiaugsmo, įkvėpimo, šilumos ir daugybę priežasčių šypsotis.“</div>
+        <div class="barcode" id="barcode"></div>
+        <div class="ticket-num">MAMA &middot; 2026 &middot; YPATINGOJI DOVANA</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <div class="gallery-title">✦ Spektaklio akimirkos ✦</div>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="0c90cad8-1b50-4769-80a2-1b9dbe07940e.png" alt="Spektaklio nuotrauka" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="placeholder" style="display:none">🎭<br>Spektaklio nuotrauka</div>
+        <div class="frame-glow"></div>
+      </div>
+      <div class="gallery-item">
+        <img src="743f66ff-8dd4-4193-bfe7-286c94df4093.png" alt="Spektaklio nuotrauka" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="placeholder" style="display:none">🎭<br>Spektaklio nuotrauka</div>
+        <div class="frame-glow"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="roses">
+    <svg width="340" height="90" viewBox="0 0 340 90" fill="none">
+      <g opacity="0.75">
+        <path d="M50 85 Q46 58 54 35" stroke="#2d6020" stroke-width="1.5" fill="none"/>
+        <path d="M170 85 Q164 52 170 22" stroke="#2d6020" stroke-width="1.5" fill="none"/>
+        <path d="M290 85 Q286 58 284 35" stroke="#2d6020" stroke-width="1.5" fill="none"/>
+        <ellipse cx="52" cy="60" rx="9" ry="4.5" fill="#3a7520" transform="rotate(-30 52 60)"/>
+        <ellipse cx="168" cy="55" rx="9" ry="4.5" fill="#3a7520" transform="rotate(15 168 55)"/>
+        <ellipse cx="287" cy="60" rx="9" ry="4.5" fill="#3a7520" transform="rotate(30 287 60)"/>
+        <circle cx="54" cy="30" r="14" fill="#8a0020" opacity=".35"/>
+        <circle cx="54" cy="30" r="10" fill="#b40030" opacity=".75"/>
+        <circle cx="54" cy="30" r="6" fill="#d4204a"/>
+        <ellipse cx="54" cy="20" rx="5.5" ry="3" fill="rgba(220,80,130,.55)"/>
+        <ellipse cx="45" cy="32" rx="4.5" ry="3" fill="rgba(220,80,130,.5)"/>
+        <ellipse cx="63" cy="32" rx="4.5" ry="3" fill="rgba(220,80,130,.5)"/>
+
+        <circle cx="170" cy="18" r="16" fill="#8a0020" opacity=".35"/>
+        <circle cx="170" cy="18" r="11" fill="#b40030" opacity=".75"/>
+        <circle cx="170" cy="18" r="6.5" fill="#d4204a"/>
+        <ellipse cx="170" cy="7" rx="6" ry="3.5" fill="rgba(220,80,130,.55)"/>
+        <ellipse cx="159" cy="20" rx="5" ry="3.5" fill="rgba(220,80,130,.5)"/>
+        <ellipse cx="181" cy="20" rx="5" ry="3.5" fill="rgba(220,80,130,.5)"/>
+
+        <circle cx="284" cy="30" r="14" fill="#8a0020" opacity=".35"/>
+        <circle cx="284" cy="30" r="10" fill="#b40030" opacity=".75"/>
+        <circle cx="284" cy="30" r="6" fill="#d4204a"/>
+        <ellipse cx="284" cy="20" rx="5.5" ry="3" fill="rgba(220,80,130,.55)"/>
+        <ellipse cx="275" cy="32" rx="4.5" ry="3" fill="rgba(220,80,130,.5)"/>
+        <ellipse cx="293" cy="32" rx="4.5" ry="3" fill="rgba(220,80,130,.5)"/>
+
+        <path d="M25 85 Q90 74 170 78 Q250 74 315 85" stroke="rgba(232,199,106,.45)" stroke-width="1" fill="none" stroke-dasharray="5 4"/>
+      </g>
+    </svg>
+  </section>
+
+  <section id="footer">
+    <div class="footer-text">Linkime, kad aplinkinių meilė ir dėkingumas šildytų Jūsų kasdienybę, o ateinantys metai būtų dosnūs tik pačių šviesiausių ir gražiausių akimirkų. Būkite visuomet mylima ir laiminga!</div>
+    <div class="hearts">♥ ♥ ♥</div>
+    <div class="year">&middot; 2026 &middot; Su gimtadieniu &middot;</div>
+  </section>
+</div>
+
+<button id="music-btn" title="Įjungti / išjungti muziką">♪</button>
+
+<script>
+/* ====== BARCODE ====== */
+(function(){
+  const bar=document.getElementById('barcode');
+  const widths=[3,1,2,1,3,1,2,2,1,3,2,1,3,1,1,2,3,1,2,1,3,2,1,2,1,3,2,1];
+  widths.forEach((w,i)=>{
+    const s=document.createElement('span');
+    s.style.width=(w*2+1)+'px';
+    s.style.marginLeft=i%2===0?'1px':'0';
+    bar.appendChild(s);
+  });
+})();
+
+/* ====== OPENING SEQUENCE ====== */
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    document.getElementById('loading').classList.add('done');
+    setTimeout(()=>{
+      document.getElementById('curtain-left').classList.add('open');
+      document.getElementById('curtain-right').classList.add('open');
+      setTimeout(revealPoem, 4600);
+    }, 350);
+  }, 3000);
+});
+
+function revealPoem(){
+  document.querySelectorAll('.poem-text .line').forEach((el,i)=>{
+    setTimeout(()=>el.classList.add('show'), i*380);
+  });
+}
+
+/* ====== STAR BACKGROUND ====== */
+(function(){
+  const c=document.getElementById('bg-canvas'), ctx=c.getContext('2d');
+  let W,H,stars=[];
+  function resize(){W=c.width=innerWidth;H=c.height=innerHeight;init()}
+  function init(){
+    stars=[];
+    for(let i=0;i<240;i++){
+      stars.push({
+        x:Math.random()*W,
+        y:Math.random()*H,
+        r:Math.random()*1.8+.2,
+        a:Math.random(),
+        da:(.002+Math.random()*.004)*(Math.random()<.5?1:-1),
+        drift:Math.random()*.25-.125,
+        color:Math.random()<.18?'rgba(232,199,106,':'rgba(255,255,255,'
+      });
+    }
+  }
+  function drawBg(){
+    const g=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,Math.max(W,H)*.75);
+    g.addColorStop(0,'#1a0010');
+    g.addColorStop(.4,'#0d0008');
+    g.addColorStop(1,'#000');
+    ctx.fillStyle=g;
+    ctx.fillRect(0,0,W,H);
+
+    const ag=ctx.createLinearGradient(0,H*.3,W,H*.7);
+    ag.addColorStop(0,'rgba(100,0,30,.07)');
+    ag.addColorStop(.5,'rgba(60,10,40,.04)');
+    ag.addColorStop(1,'rgba(0,0,60,.06)');
+    ctx.fillStyle=ag;
+    ctx.fillRect(0,0,W,H);
+  }
+  function animate(){
+    ctx.clearRect(0,0,W,H);
+    drawBg();
+    stars.forEach(s=>{
+      s.a+=s.da;
+      if(s.a>1||s.a<0)s.da*=-1;
+      s.x+=s.drift;
+      if(s.x<0)s.x=W;
+      if(s.x>W)s.x=0;
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=s.color+Math.max(0,Math.min(1,s.a)).toFixed(2)+')';
+      ctx.fill();
+    });
+    requestAnimationFrame(animate);
+  }
+  addEventListener('resize',resize);
+  resize();
+  animate();
+})();
+
+/* ====== PETALS ====== */
+(function(){
+  const c=document.getElementById('petal-canvas'), ctx=c.getContext('2d');
+  let W,H,parts=[];
+  function resize(){W=c.width=innerWidth;H=c.height=innerHeight}
+  addEventListener('resize',resize);
+  resize();
+
+  for(let i=0;i<90;i++)spawn(true);
+
+  function spawn(init){
+    const gold=Math.random()<.32;
+    parts.push({
+      x:Math.random()*W,
+      y:init?Math.random()*H:-10,
+      r:gold?2+Math.random()*2:4+Math.random()*7,
+      vx:Math.random()*1.2-.6,
+      vy:.4+Math.random()*1.3,
+      rot:Math.random()*Math.PI*2,
+      vr:(.01+Math.random()*.03)*(Math.random()<.5?1:-1),
+      a:.55+Math.random()*.45,
+      gold,
+      sway:Math.random()*Math.PI*2,
+      swaySpeed:.018+Math.random()*.02
+    });
+  }
+
+  function drawPart(p){
+    ctx.save();
+    ctx.translate(p.x,p.y);
+    ctx.rotate(p.rot);
+    ctx.globalAlpha=p.a;
+    if(p.gold){
+      ctx.fillStyle='rgba(232,199,106,.9)';
+      ctx.beginPath();ctx.arc(0,0,p.r,0,Math.PI*2);ctx.fill();
+    }else{
+      const g=ctx.createRadialGradient(0,-p.r*.3,0,0,0,p.r);
+      g.addColorStop(0,'rgba(230,80,120,.95)');
+      g.addColorStop(1,'rgba(160,20,60,.7)');
+      ctx.fillStyle=g;
+      ctx.beginPath();ctx.ellipse(0,0,p.r*.6,p.r,0,0,Math.PI*2);ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function animate(){
+    ctx.clearRect(0,0,W,H);
+    parts.forEach((p,i)=>{
+      p.sway += p.swaySpeed;
+      p.x += p.vx + Math.sin(p.sway)*.4;
+      p.y += p.vy;
+      p.rot += p.vr;
+      drawPart(p);
+      if(p.y>H+20){
+        parts.splice(i,1);
+        spawn(false);
+      }
+    });
+    while(parts.length<90)spawn(false);
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+
+/* ====== FIREWORKS ====== */
+const fireCanvas=document.getElementById('fire-canvas');
+const fCtx=fireCanvas.getContext('2d');
+let fW,fH, sparks=[];
+
+function resizeFire(){
+  fW=fireCanvas.width=innerWidth;
+  fH=fireCanvas.height=innerHeight;
+}
+addEventListener('resize',resizeFire);
+resizeFire();
+
+function launchFireworks(count){
+  const colors=['#e8c76a','#ffd97a','#ff6b9d','#ff4b6b','#fff','#ffaa55','#aaffdd','#ff88cc'];
+  for(let b=0;b<(count||5);b++){
+    setTimeout(()=>{
+      const x=fW*.18+Math.random()*fW*.64;
+      const y=fH*.08+Math.random()*fH*.38;
+      for(let i=0;i<84;i++){
+        const ang=Math.random()*Math.PI*2;
+        const sp=2+Math.random()*5.5;
+        sparks.push({
+          x,y,
+          vx:Math.cos(ang)*sp,
+          vy:Math.sin(ang)*sp,
+          a:1,
+          color:colors[Math.floor(Math.random()*colors.length)],
+          r:1.5+Math.random()*2.5,
+          decay:.01+Math.random()*.02
+        });
+      }
+    }, b*220);
+  }
+}
+
+function animateFireworks(){
+  fCtx.fillStyle='rgba(0,0,0,.16)';
+  fCtx.fillRect(0,0,fW,fH);
+  sparks.forEach((s,i)=>{
+    s.x += s.vx;
+    s.y += s.vy;
+    s.vy += .055;
+    s.a -= s.decay;
+    if(s.a<=0){
+      sparks.splice(i,1);
+      return;
+    }
+    fCtx.save();
+    fCtx.globalAlpha=s.a;
+    fCtx.beginPath();
+    fCtx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    fCtx.fillStyle=s.color;
+    fCtx.fill();
+    fCtx.restore();
+  });
+  requestAnimationFrame(animateFireworks);
+}
+animateFireworks();
+
+/* ====== SPARKS ON OPEN ====== */
+function burstSparks(x,y,n=26){
+  for(let i=0;i<n;i++){
+    const d=document.createElement('div');
+    d.className='spark';
+    d.style.left=x+'px';
+    d.style.top=y+'px';
+    const dx=(Math.random()*220-110)+'px';
+    const dy=(Math.random()*220-160)+'px';
+    d.style.setProperty('--dx',dx);
+    d.style.setProperty('--dy',dy);
+    d.style.background=Math.random()<.5?'#e8c76a':'#ff88cc';
+    d.style.animationDuration=(.8+Math.random()*.6)+'s';
+    document.body.appendChild(d);
+    d.addEventListener('animationend',()=>d.remove());
+  }
+}
+
+/* ====== NOTES FLOAT ====== */
+const noteChars=['♩','♪','♫','♬'];
+function spawnNote(){
+  const n=document.createElement('div');
+  n.className='note';
+  n.textContent=noteChars[Math.floor(Math.random()*noteChars.length)];
+  n.style.left=Math.random()*90+'%';
+  n.style.bottom='26px';
+  n.style.fontSize=(14+Math.random()*16)+'px';
+  n.style.animationDuration=(7+Math.random()*6)+'s';
+  document.body.appendChild(n);
+  n.addEventListener('animationend',()=>n.remove());
+}
+setInterval(spawnNote,1400);
+
+/* ====== CLICK HEARTS ====== */
+document.addEventListener('click',e=>{
+  if(e.target.closest('#music-btn') || e.target.closest('#loading') || e.target.closest('#gift')) return;
+  const icons=['♥','🌹','✨','💫','♪','✦'];
+  const h=document.createElement('div');
+  h.className='click-heart';
+  h.textContent=icons[Math.floor(Math.random()*icons.length)];
+  h.style.left=e.clientX+'px';
+  h.style.top=e.clientY+'px';
+  h.style.fontSize=(16+Math.random()*14)+'px';
+  document.body.appendChild(h);
+  h.addEventListener('animationend',()=>h.remove());
+});
+
+/* ====== PARALLAX LIGHT ====== */
+document.addEventListener('mousemove',e=>{
+  const dx=(e.clientX-innerWidth/2)/innerWidth;
+  const dy=(e.clientY-innerHeight/2)/innerHeight;
+  document.getElementById('spotlight').style.transform=
+    `translateX(calc(-50% + ${dx*30}px)) translateY(${dy*20}px)`;
+});
+
+/* ====== CONFETTI ====== */
+function confetti(){
+  const colors=['#e8c76a','#ff4b6b','#ffd97a','#ff88cc','#aaffdd','#fff','#ff6b9d'];
+  for(let i=0;i<76;i++){
+    setTimeout(()=>{
+      const k=document.createElement('div');
+      k.className='confetti';
+      k.style.left=Math.random()*100+'vw';
+      k.style.top='-10px';
+      k.style.background=colors[Math.floor(Math.random()*colors.length)];
+      k.style.borderRadius=Math.random()>.5?'50%':'2px';
+      k.style.width=(6+Math.random()*6)+'px';
+      k.style.height=(6+Math.random()*10)+'px';
+      k.style.animationDuration=(2+Math.random()*3)+'s';
+      k.style.transform=`rotate(${Math.random()*360}deg)`;
+      document.body.appendChild(k);
+      k.addEventListener('animationend',()=>k.remove());
+    },i*40);
+  }
+}
+
+/* ====== MUSIC: ONE INSTRUMENT, SIMPLE PIANO-LIKE SYNTH ====== */
+let audioCtx=null;
+let isPlaying=false;
+let loopTimer=null;
+
+const NOTES={
+  C4:261.63, D4:293.66, E4:329.63, F4:349.23, G4:392.00, A4:440.00, B4:493.88,
+  C5:523.25, D5:587.33, E5:659.25, F5:698.46, G5:783.99
+};
+
+/* Paprasta „Su gimtadieniu“ melodija. Vienas instrumentas – pianino stiliaus garsas. */
+const melody=[
+  {n:'G4', d:.34},{n:'G4', d:.18},{n:'A4', d:.52},{n:'G4', d:.52},{n:'C5', d:.52},{n:'B4', d:1.0},
+  {n:'G4', d:.34},{n:'G4', d:.18},{n:'A4', d:.52},{n:'G4', d:.52},{n:'D5', d:.52},{n:'C5', d:1.0},
+  {n:'G4', d:.34},{n:'G4', d:.18},{n:'G5', d:.52},{n:'E5', d:.52},{n:'C5', d:.52},{n:'B4', d:.52},{n:'A4', d:1.0},
+  {n:'F5', d:.34},{n:'F5', d:.18},{n:'E5', d:.52},{n:'C5', d:.52},{n:'D5', d:.52},{n:'C5', d:1.25}
+];
+
+function pianoTone(freq,start,duration,vol=.16){
+  const o=audioCtx.createOscillator();
+  const g=audioCtx.createGain();
+  const f=audioCtx.createBiquadFilter();
+
+  o.type='triangle'; // vienas instrumentas, pianino tipo sintezė
+  o.frequency.setValueAtTime(freq,start);
+
+  f.type='lowpass';
+  f.frequency.setValueAtTime(Math.max(900, freq*8), start);
+  f.Q.value=0.8;
+
+  g.gain.setValueAtTime(.0001,start);
+  g.gain.exponentialRampToValueAtTime(vol,start+.03);
+  g.gain.setValueAtTime(vol*.82,start+duration*.72);
+  g.gain.exponentialRampToValueAtTime(.0001,start+duration);
+
+  o.connect(f);
+  f.connect(g);
+  g.connect(audioCtx.destination);
+
+  o.start(start);
+  o.stop(start+duration+.06);
+}
+
+function playBirthdaySong(){
+  if(!audioCtx) return;
+  const start=audioCtx.currentTime+.12;
+  let t=start;
+
+  melody.forEach(step=>{
+    const f=NOTES[step.n];
+    pianoTone(f,t,step.d,.18);
+    t += step.d + 0.012;
+  });
+
+  const totalMs=(t-start)*1000 + 650;
+  loopTimer=setTimeout(()=>{
+    if(isPlaying && audioCtx) playBirthdaySong();
+  }, totalMs);
+}
+
+function toggleMusic(){
+  const btn=document.getElementById('music-btn');
+  if(isPlaying){
+    if(loopTimer) clearTimeout(loopTimer);
+    loopTimer=null;
+    audioCtx.close();
+    audioCtx=null;
+    isPlaying=false;
+    btn.textContent='♪';
+    btn.classList.remove('playing');
+    return;
+  }
+  audioCtx=new (window.AudioContext || window.webkitAudioContext)();
+  isPlaying=true;
+  btn.textContent='♫';
+  btn.classList.add('playing');
+  playBirthdaySong();
+}
+
+/* ====== GIFT OPEN ====== */
+let opened=false;
+document.getElementById('gift').addEventListener('click',()=>{
+  if(opened) return;
+  opened=true;
+
+  const gift=document.getElementById('gift');
+  gift.classList.add('shake');
+
+  setTimeout(()=>{
+    gift.classList.remove('shake');
+    gift.classList.add('opened');
+
+    const rect=gift.getBoundingClientRect();
+    burstSparks(rect.left + rect.width/2, rect.top + 20, 30);
+    confetti();
+    launchFireworks(7);
+
+    /* įjungti muziką iškart po atidarymo – tik vienas instrumentas, be intro akordų */
+    if(!isPlaying){
+      audioCtx=new (window.AudioContext || window.webkitAudioContext)();
+      isPlaying=true;
+      const btn=document.getElementById('music-btn');
+      btn.textContent='♫';
+      btn.classList.add('playing');
+      playBirthdaySong();
+    }
+
+    setTimeout(()=>{
+      const reveal=document.getElementById('reveal');
+      const gallery=document.getElementById('gallery');
+      const roses=document.getElementById('roses');
+      const footer=document.getElementById('footer');
+
+      reveal.classList.add('show');
+      gallery.style.display='block';
+      gallery.classList.add('fw-reveal');
+      roses.style.opacity='1';
+      footer.style.opacity='1';
+
+      reveal.scrollIntoView({behavior:'smooth', block:'center'});
+
+      setTimeout(()=>{
+        launchFireworks(5);
+        confetti();
+      },800);
+    }, 880);
+  }, 600);
+});
+
+/* ====== MUSIC BUTTON ====== */
+document.getElementById('music-btn').addEventListener('click',()=>{
+  toggleMusic();
+});
+</script>
+</body>
+</html>
